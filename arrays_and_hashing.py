@@ -58,7 +58,7 @@ def groupAnagram(strs):
 strs = ["eat","tea","tan","ate","nat","bat"]
 strs = [""]
 #strs = ["a"]
-print(groupAnagram(strs))
+# print(groupAnagram(strs))
 #print(isAnagram("", ""))
 
 def topKFrequent(nums, k):
@@ -82,4 +82,33 @@ def topKFrequent(nums, k):
 
 
 
-print(topKFrequent([1,2,3,4,5,6,6],2))
+# print(topKFrequent([1,2,3,4,5,6,6],2))
+
+
+
+
+
+
+#238
+#I have to do this in O(n) time...
+#The simplist way to do this would be with a double while loop.
+#For each element, go through the list and copy everything but itself.
+#But that would be O(n^2).
+def productExceptSelf(nums):
+
+    result = [1]*(len(nums))
+    prefixProduct = 1
+    suffixProduct = 1
+
+    for i in range (len(nums)):
+        result[i] = prefixProduct
+        prefixProduct = prefixProduct * nums[i]
+
+    for i in range (len(nums)):
+        result[(-1+(i*-1))] *= suffixProduct
+        suffixProduct = suffixProduct * nums[(-1+(i*-1))]
+    return result
+    
+print(productExceptSelf([1,2,3,4]))
+#Lessons: 1: O(n) can mean 2 loops over the data (or any number of loops really)
+#Prefix and suffix are a common topic - Just everything before or everything after.
