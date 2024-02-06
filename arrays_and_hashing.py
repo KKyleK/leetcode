@@ -185,7 +185,42 @@ board2 = [["8","1","3",".","7",".",".",".","."]
 ,[".","6",".",".",".",".","2","8","."]
 ,[".",".",".","4","1","9",".",".","5"]
 ,[".",".",".",".","8",".",".","7","9"]]
-if(valid_sudoku(board2)):
-    print("TRUE")
-else:
-    print("FALSE")
+# if(valid_sudoku(board2)):
+#     print("TRUE")
+# else:
+#     print("FALSE")
+
+
+#128
+#Find the length of the longest consecutive element sequence in O(n) time.
+#Obvious solution: Iterate over the array, and find the smallest element.
+#Then do that again and see if the next smallest elements form a sequence or not.
+#Problem: This is O(n^2) since each lookup is o(n) and we need to do n lookups.
+
+#SOLUTION: If we use a HASHMAP when doing this, we get constant lookup times.
+#This means we can now iterate through all elements (O(n)) and check if a sequence exists (O(1) for each lookup)
+def longestConsecutive(nums):
+    #Construct a dictionary representation of the array with dummy values (O(n).
+    actual_longest=0
+    nums_dict = dict.fromkeys(nums, 0)
+    #By iterating over the array instead of the dictionary, we can pop from the dictionary which will eliminate duplicate lookups.
+    for num in nums: 
+        longest = 1
+        num_up = num+1
+        num_down = num-1
+        while nums_dict.get(num_up) != None:
+            nums_dict.pop(num_up)
+            longest+=1
+            num_up+=1
+        while nums_dict.get(num_down) != None:
+            nums_dict.pop(num_down)
+            longest+=1
+            num_down+=-1
+        actual_longest = max(longest,actual_longest)
+    return actual_longest
+
+print(longestConsecutive([100,4,200,1,3,2]))
+
+#It's too slow! Ok... Let's remove the dict item once it's counted.
+
+
