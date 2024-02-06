@@ -109,6 +109,83 @@ def productExceptSelf(nums):
         suffixProduct = suffixProduct * nums[(-1+(i*-1))]
     return result
     
-print(productExceptSelf([1,2,3,4]))
+#print(productExceptSelf([1,2,3,4]))
 #Lessons: 1: O(n) can mean 2 loops over the data (or any number of loops really)
 #Prefix and suffix are a common topic - Just everything before or everything after.
+
+# 36
+#Checks: Each row has no duplicates.
+#        Each column has no duplicates.
+#        Each 3x3 has no duplicates.
+def valid_sudoku(board):
+    #Check that each 3x3 has no duplicates.
+    row_offset = 0
+    while row_offset < 9:
+        column_offset = 0
+        while column_offset < 9:
+            i = 0
+            items = {}
+            while i < 3:
+                j=0
+                while j < 3:
+                    if (items.get(board[i+row_offset][j+column_offset]) != None) and (board[i+row_offset][j+column_offset] != '.'):
+                        return False
+                    items.update({board[i+row_offset][j+column_offset]:0})
+                    j+=1
+                i+=1
+            column_offset+=3
+            #print (items.keys()) #By here I have a full 3x3 done.
+        row_offset+=3
+
+    #Check that each row is unique:
+    i = 0
+    j = 0
+    while i < 9:
+        items = {}
+        while j < 9:
+            if items.get(board[i][j]) != None and board[i][j] != '.':
+                return False
+            items.update({board[i][j]:0})
+            j+=1
+        i+=1
+        j=0
+
+    i = 0
+    j = 0
+    while j < 9:
+        items = {}
+        while i < 9:
+            if items.get(board[i][j]) != None and board[i][j] != '.':
+                return False
+            items.update({board[i][j]:0})
+            i+=1
+        j+=1
+        i=0
+
+    return True
+#True
+board = [["5","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+
+
+#False
+board2 = [["8","1","3",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+if(valid_sudoku(board2)):
+    print("TRUE")
+else:
+    print("FALSE")
