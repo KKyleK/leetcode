@@ -30,4 +30,54 @@ def isValid(s):
     return True
 
 test = "()[]{}"
-print(isValid("(]"))
+# print(isValid("(]"))
+
+
+#155: Stack that must implement push, pop, top, getMin in O(1)
+#The trick here is that we need to maintain a second stack that contains the
+#elements with the smallest value.
+class MinStack:
+    def __init__(self):
+        self.data = []
+        self.smallest = []
+
+    def push(self, val):
+        self.data.append(val) #O(1)
+
+        #If this is the new smallest element or a duplicate, add it to the smallest stack.
+        length = len(self.smallest)
+        if length ==0:
+            self.smallest.append(val)
+        else:
+            if self.smallest[length-1] >= val:
+                self.smallest.append(val)
+
+    def pop(self):
+        if len(self.data) == 0:
+            return
+        val = self.data.pop() #O(1)
+        if self.smallest[len(self.smallest)-1] == val:
+            self.smallest.pop()
+
+    def top(self):
+        length = len(self.data)
+        if length == 0:
+            return None
+        else:
+            return self.data[length-1]
+
+    def getMin(self):
+        length = len(self.smallest)
+        if length == 0:
+            return None
+        else:
+            return self.smallest[length-1]
+
+minStack = MinStack()
+minStack.push(-2)
+minStack.push(0)
+minStack.push(-3)
+print(minStack.getMin()) # return -3
+minStack.pop()
+print(minStack.top()) # return 0
+print(minStack.getMin()) # return -2
