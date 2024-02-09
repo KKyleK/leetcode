@@ -1,3 +1,5 @@
+import math
+
 #The Python Collections library has a deque which is a list that is designed for use as a stack or queue.
 #List methods:
 #append(adds to end)
@@ -73,11 +75,43 @@ class MinStack:
         else:
             return self.smallest[length-1]
 
-minStack = MinStack()
-minStack.push(-2)
-minStack.push(0)
-minStack.push(-3)
-print(minStack.getMin()) # return -3
-minStack.pop()
-print(minStack.top()) # return 0
-print(minStack.getMin()) # return -2
+# minStack = MinStack()
+# minStack.push(-2)
+# minStack.push(0)
+# minStack.push(-3)
+# print(minStack.getMin()) # return -3
+# minStack.pop()
+# print(minStack.top()) # return 0
+# print(minStack.getMin()) # return -2
+
+#150: 
+#Division operations are floored.
+def evalRPN(tokens):
+    stack = []
+    operations = ['+', '-', '*','/']
+    for i in tokens:
+        if i in operations:
+            operand1 = stack.pop()
+            operand2 = stack.pop()
+            # print(str(operand2) + ' ' + i + ' '+ str(operand1))
+            if i == '+':
+                value = operand2+operand1
+            elif i == '-':
+                value = operand2-operand1
+            elif i == '*':
+                value = operand2*operand1
+            else:
+                value = (operand2/operand1)
+                if value < 0 and value != math.floor(value):
+                    value+=1
+                value = int(math.floor(value))
+            stack.append(value)
+        else:
+            stack.append(int(i))
+    return stack.pop()
+
+# tokens = ["2","1","+","3","*"]
+# tokens = ["4","13","5","/","+"]
+# tokens = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
+# tokens = ["4","-2","/","2","-3","-","-"]
+# print(evalRPN(tokens))
