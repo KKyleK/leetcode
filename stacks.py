@@ -33,6 +33,7 @@ def isValid(s):
 
 test = "()[]{}"
 # print(isValid("(]"))
+# print(isValid(")"))
 
 
 #155: Stack that must implement push, pop, top, getMin in O(1)
@@ -84,7 +85,7 @@ class MinStack:
 # print(minStack.top()) # return 0
 # print(minStack.getMin()) # return -2
 
-#150: 
+#150:
 #Division operations are floored.
 def evalRPN(tokens):
     stack = []
@@ -115,3 +116,68 @@ def evalRPN(tokens):
 # tokens = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
 # tokens = ["4","-2","/","2","-3","-","-"]
 # print(evalRPN(tokens))
+
+
+# 22: Generate all possible combinations of well formed parenthesis.
+class Solution:
+    def isValid(self, s):
+        open_brace = ['(', '{', '[']
+        close_brace = [')', '}', ']']
+        stack = deque()
+        for i in s:
+            if i in open_brace:
+                stack.append(i)
+            else:
+                if len(stack) == 0:
+                    return False
+                end = stack.pop() #By default, pop returns the last element.
+                if open_brace.index(end) != close_brace.index(i):
+                    return False
+        if len(stack)!=0:
+            return False
+        return True
+
+    def generateAll(self, n: int, result=None, current="") -> list[str]:
+        if result is None:
+            result=[]
+        if len(current) == (2*n):
+            result.append(current)
+            return result
+
+        self.generateAll(n, result, current+')')
+        self.generateAll(n, result, current+'(')
+        return result
+
+    def generateParenthesis(self, n: int) -> list[str]:
+        values = self.generateAll(n)
+        results = []
+        for i in values:
+            if self.isValid(i):
+                results.append(i)
+        return results
+
+solution = Solution()
+res = solution.generateParenthesis(3)
+#print(res)
+
+# 739: Daily temperatures. Find how many days until a temperature improves.
+#Initial solution below. Unfortunetly, this exceeds the timelimit.
+def dailyTemperatures(temperatures):
+    result=[]
+    #For each element of temperatures, find the next warmest.
+    i=0
+    while i < len(temperatures):
+        current= temperatures[i]
+        j=i+1
+        next_warmest = 0
+        while j < len(temperatures):
+            if temperatures[j] > current:
+                next_warmest = j-i
+                break
+            j+=1
+        result.append(next_warmest)
+        i+=1
+    return(result)
+
+temperatures = [73,74,75,71,69,72,76,73]
+#print(dailyTemperatures(temperatures))
