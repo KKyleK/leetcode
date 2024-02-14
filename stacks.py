@@ -180,4 +180,44 @@ def dailyTemperatures(temperatures):
     return(result)
 
 temperatures = [73,74,75,71,69,72,76,73]
+
+#O(n) implementation.
+#The idea is to store indicies when we see them for later computation. Don't need a stack nessesarily.
+def dailyTemperatures(temperatures):
+    results = [0] * len(temperatures)
+    storage=[]
+    i = 0
+    while i < len(temperatures):
+        while len(storage)!=0 and temperatures[storage[0]] < temperatures[i]:
+            results[storage[0]] = i- storage[0]
+            storage.pop(0)
+        storage.insert(0,i)
+        i+=1
+    return results
+
+temperatures = [73,74,75,71,69,72,76,73]
 #print(dailyTemperatures(temperatures))
+
+#853: Car Fleet.
+#Using a stack here is possible, but it's much more work.
+def carFleet(target, position, speed):
+    fleet=0
+    sort_cars = sorted(zip(position,speed))
+    time_dest = []
+    for position, speed in sort_cars:
+        time = (target-position)/speed
+        time_dest.append(time)
+
+    bottleneck=0
+    counter = len(time_dest)-1
+    while counter >=0:
+        if time_dest[counter] > bottleneck:
+            fleet+=1
+            bottleneck = time_dest[counter]
+        counter+=-1
+    return fleet
+
+target = 12
+position = [10,8,0,5,3]
+speed = [2,4,1,1,3]
+#print(carFleet(target, position,speed))
