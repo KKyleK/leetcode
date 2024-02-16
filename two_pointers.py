@@ -94,5 +94,45 @@ def threeSum(nums):
         i+=1
     return output
 
-print(threeSum([-2,0,1,1,2]))
-print(threeSum([0,0,0,0]))
+# print(threeSum([-2,0,1,1,2]))
+# print(threeSum([0,0,0,0]))
+
+#11: Container with most water.
+def maxArea(nums):
+    i = 0
+    max_area = 0
+    while i < len(nums)-1:
+        j = i+1
+        while j < len(nums):
+            # print(str(nums[i]) +' ' +  str(nums[j]))
+            distance = j-i
+            area = min(nums[i], nums[j]) * distance
+            if area > max_area:
+                max_area = area
+            j+=1
+        i+=1
+    return max_area
+
+height = [1,8,6,2,5,4,8,3,7]
+print(maxArea(height))
+#unfortunetly, this hits time limit problems.
+#Faster solution using a two pointer approach: (start at opposite ends)
+def maxArea(nums):
+    i = 0
+    j = len(nums)-1
+    max_area = 0
+    while i < j:
+        distance = j-i
+        area = min(nums[i], nums[j]) * distance
+        if area > max_area:
+            max_area = area
+
+        #This is the trick. Stay on the higher bar, moving the other pointer instead.
+        if nums[i] > nums[j]:
+            j-=1
+        else:
+            i+=1
+    return max_area
+
+height = [1,8,6,2,5,4,8,3,7]
+print(maxArea(height))
