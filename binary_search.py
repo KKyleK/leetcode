@@ -57,3 +57,54 @@ def searchMatrix(matrix, target):
 
 matrix=[[-9,-8,-8],[-5,-3,-2],[0,2,2],[4,6,8]]
 # print(searchMatrix(matrix,15))
+
+#875: Koko eating bananas.
+def minEatingSpeed(piles, h):
+    #We know a few things:
+    #The eating speed will have to be: 0 < max(piles)
+    #Perform a binary search on that?
+    piles.sort()
+    max=piles[-1]
+    test = list(range(1,max+1))
+
+    slowest_rate=max
+    start=0
+    end=len(test)-1
+    while start < end:
+        eat_rate = test[(start+end)//2]
+        #All bananas eaten successfully. Attempt to eat slower.
+        if (eat_banana(piles, h, eat_rate)):
+            if eat_rate < slowest_rate:
+                slowest_rate=eat_rate
+            end = eat_rate-1
+
+        else:
+            start = eat_rate+1
+    if start==end:
+        eat_rate=end
+        if (eat_banana(piles, h, eat_rate)):
+            if eat_rate < slowest_rate:
+                slowest_rate=eat_rate
+
+    return slowest_rate
+
+def eat_banana(piles, h, eat_rate):
+    curr_pile=0
+    save = piles[curr_pile]
+    while h > 0 and curr_pile < len(piles):
+        piles[curr_pile] -= eat_rate
+        if piles[curr_pile] <= 0:
+            piles[curr_pile]=save
+            curr_pile+=1
+            if curr_pile < len(piles):
+                save=piles[curr_pile]
+        h -=1
+    if curr_pile == len(piles):
+        return True
+    else:
+        piles[curr_pile]=save
+        return False
+
+# print(minEatingSpeed([3,6,7,11], 8))
+# print(minEatingSpeed([30,11,23,4,20], 5))
+# print(minEatingSpeed([30,11,23,4,20], 6))
