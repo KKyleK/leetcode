@@ -121,4 +121,36 @@ def findMin(nums):
         nums_deque.append(first)
     return nums_deque[0]
 
-print(findMin([4,5,6,7,0,1,2]))
+# print(findMin([4,5,6,7,0,1,2]))
+
+#33: Sorted array search.
+#Very similar to the problem above. We will un-rotate the array
+#and then perform a binary search for the target.
+def search(nums, target):
+    rotations=0
+    while nums[0] > nums[-1]:
+        first = nums.pop(0)
+        nums.append(first)
+        rotations+=1
+    #An array of length one breaks the modulo code below, so check that case here.
+    if (len(nums)==1):
+        if target==nums[0]:
+            return 0
+        else:
+            return -1
+    #Perform binary search on the array.
+    start=0
+    end=len(nums)-1
+    while start < end:
+        half = ((start+end)//2)
+        if nums[half] == target:
+            return ((half+rotations) % (len(nums)))
+        elif nums[half] < target:
+            start=half+1
+        else:
+            end=half-1
+    if nums[start] == target:
+        return ((start+rotations) % (len(nums)))
+    return -1
+
+print(search([1,3], 3))
