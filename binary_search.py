@@ -101,8 +101,24 @@ def eat_banana(piles, h, eat_rate):
     else:
         return False
 
-print(minEatingSpeed([3,6,7,11], 8))
-print(minEatingSpeed([30,11,23,4,20], 5))
-print(minEatingSpeed([30,11,23,4,20], 6))
+# print(minEatingSpeed([3,6,7,11], 8))
+# print(minEatingSpeed([30,11,23,4,20], 5))
+# print(minEatingSpeed([30,11,23,4,20], 6))
 
-print(minEatingSpeed([312884470],968709470))
+# print(minEatingSpeed([312884470],968709470))
+
+
+#153: Find minimum in rotated sorted array.
+#From testing, the deque here is actually slower on average then just using the list.
+#This is probably because of the initialization time required to create the deque object,
+#as well as importing it from the collections library.
+from collections import deque
+def findMin(nums):
+
+    nums_deque = deque(nums) #This should be faster.
+    while nums_deque[0] > nums_deque[-1]:
+        first = nums_deque.popleft()
+        nums_deque.append(first)
+    return nums_deque[0]
+
+print(findMin([4,5,6,7,0,1,2]))
