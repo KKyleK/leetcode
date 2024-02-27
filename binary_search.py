@@ -153,4 +153,60 @@ def search(nums, target):
         return ((start+rotations) % (len(nums)))
     return -1
 
-print(search([1,3], 3))
+# print(search([1,3], 3))
+
+#981: Time Based Key-Value Store.
+class TimeMap:
+    def __init__(self):
+        self.dict={}
+
+    def set(self, key, value, timestamp):
+        arr = self.dict.get(key)
+        #Key already exists. Add timestamp using binary search.
+        if arr:
+            end = len(arr)-1
+            start = 0
+            while start < end:
+                mid = (end+start) //2
+                if arr[mid][1] < timestamp:
+                    start = mid+1
+                else:
+                    end = mid-1
+            arr.insert(start+1,(value,timestamp))
+        else:
+            self.dict[key] = [(value,timestamp)]
+
+    def get(self, key: str, timestamp: int) -> str:
+        #Key exists. Find the tuple that contains the given timestamp. (Or the last timestamp)
+        if self.dict.get(key):
+            arr = self.dict[key]
+            start = 0
+            end = len(arr)-1
+            while start < end:
+                mid = (end+start) //2
+                if arr[mid][1] == timestamp:
+                    return arr[mid][0]
+                elif arr[mid][1] < timestamp:
+                    start=mid+1
+                else:
+                    end = mid-1
+            if arr[start][1] == timestamp:
+                    return arr[start][0]
+            if arr[start][1] < timestamp:
+                return arr[start][0]
+            else:
+                if arr[start-1][1] < timestamp:
+                    return arr[start-1][0]
+                else:
+                    return ""
+        else:
+            return ""
+
+# map = TimeMap()
+# map.set("love","high",10)
+# map.set("love","low",20)
+# map.get("love",5)
+# map.get("love",10)
+# map.get("love",15)
+# map.get("love",20)
+# map.get("love",25)
