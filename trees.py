@@ -39,3 +39,13 @@ print_all(root)
 invertTree(root)
 print()
 print_all(root)
+
+#104
+def maxDepth(root, depth=0):
+    #Base case: current node is null. return.
+    if root is None:
+        return depth
+    #Recursive case: find the largest depth of the child nodes.
+    right_depth = max(depth,maxDepth(root.right, depth+1))
+    left_depth = max(depth,maxDepth(root.left, depth+1))
+    return max(right_depth, left_depth)
