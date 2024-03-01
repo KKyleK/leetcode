@@ -10,6 +10,32 @@ def print_all(root):
         print_all(root.right)
         print_all(root.left)
 
+#Add a leaf to a tree. Not rebalancing for now.
+#I thought that traversing to the none leaf and updating that into a real leaf
+#would work since the real leaf would still be connected to the tree with the .right
+#or .left, but that isen't the case. Must add values to the tree by updating .right and .left
+#themselves.
+def add_tree_node(root, val):
+    if root is None:
+        root= TreeNode(val, None, None)
+        return root
+    else:
+        pointer=root
+        while pointer is not None:
+            if val >= pointer.val:
+                if pointer.right is None:
+                    pointer.right = TreeNode(val,None,None)
+                    break
+                else:
+                    pointer = pointer.right
+            else:
+                if pointer.left is None:
+                    pointer.left = TreeNode(val,None,None)
+                    break
+                else:
+                    pointer = pointer.left
+    return root
+
 
 #226: Invert Binary tree.
 #Each node is flipped from being a left child to a right, and vice versa.
@@ -35,12 +61,11 @@ left = TreeNode(2,bot_left,bot_mid_left)
 right= TreeNode(7,bot_mid_right,bot_right)
 root = TreeNode(4,left,right)
 
-print_all(root)
-invertTree(root)
-print()
-print_all(root)
+# print_all(root)
+# invertTree(root)
+# print_all(root)
 
-#104
+#104: Max depth of binary tree.
 def maxDepth(root, depth=0):
     #Base case: current node is null. return.
     if root is None:
@@ -49,3 +74,22 @@ def maxDepth(root, depth=0):
     right_depth = max(depth,maxDepth(root.right, depth+1))
     left_depth = max(depth,maxDepth(root.left, depth+1))
     return max(right_depth, left_depth)
+
+#543: Diameter of binary tree.
+#Diamter is the largest distance between two nodes in the tree.
+def diameterOfBinaryTree(root, diameter=0):
+    if root is None:
+        return 0
+    curr_depth = maxDepth(root.right) + maxDepth(root.left)
+    left_depth = diameterOfBinaryTree(root.left)
+    right_depth = diameterOfBinaryTree(root.right)
+    return max(curr_depth, left_depth, right_depth)
+
+new_root=add_tree_node(None, 4)
+add_tree_node(new_root,7)
+add_tree_node(new_root,6)
+add_tree_node(new_root,9)
+add_tree_node(new_root,2)
+add_tree_node(new_root,3)
+add_tree_node(new_root,1)
+print(diameterOfBinaryTree(new_root))
