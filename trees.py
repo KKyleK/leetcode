@@ -85,11 +85,32 @@ def diameterOfBinaryTree(root, diameter=0):
     right_depth = diameterOfBinaryTree(root.right)
     return max(curr_depth, left_depth, right_depth)
 
-new_root=add_tree_node(None, 4)
-add_tree_node(new_root,7)
-add_tree_node(new_root,6)
-add_tree_node(new_root,9)
-add_tree_node(new_root,2)
-add_tree_node(new_root,3)
-add_tree_node(new_root,1)
-print(diameterOfBinaryTree(new_root))
+# new_root=add_tree_node(None, 4)
+# add_tree_node(new_root,7)
+# add_tree_node(new_root,6)
+# add_tree_node(new_root,9)
+# add_tree_node(new_root,2)
+# add_tree_node(new_root,3)
+# add_tree_node(new_root,1)
+# print(diameterOfBinaryTree(new_root))
+
+#110: Balanced Binary tree.
+#Idea: For each node, compute the depth of the node's right and left nodes. If they are not within one of eachother,
+# return False. This is an O(n^2) implementation since computing the depth of a node is O(n) and we need to do that n times.
+def isBalanced(root):
+    if root is None:
+        return True
+    toVisit = []
+    toVisit.append(root)
+    while len(toVisit) > 0:
+        current = toVisit.pop()
+        leftDepth = maxDepth(current.left)
+        rightDepth = maxDepth(current.right)
+        if abs(leftDepth-rightDepth) > 1:
+            return False
+        #Check all other nodes.
+        if current.left is not None:
+            toVisit.append(current.left)
+        if current.right is not None:
+            toVisit.append(current.right)
+    return True
