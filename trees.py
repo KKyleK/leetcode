@@ -114,3 +114,68 @@ def isBalanced(root):
         if current.right is not None:
             toVisit.append(current.right)
     return True
+
+#100: Same tree.
+# Idea: Add both trees into an array. Check if the elements of the array are ident
+def isSameTree(p,q):
+    toVisitTree1 = []
+    toVisitTree1.append(p)
+    toVisitTree2 = []
+    toVisitTree2.append(q)
+    #Check base case that one or both of the trees are empty.
+    if p is None:
+        if q is None:
+            return True
+        else:
+            return False
+    if q is None:
+        if p is None:
+            return True
+        else:
+            return False
+
+    while len(toVisitTree1) > 0 and len(toVisitTree2) > 0:
+        node1 = toVisitTree1.pop()
+        node2 = toVisitTree2.pop()
+        if node1.val != node2.val:
+            return False
+        #Traverse the trees.
+        if node1.right is not None:
+            toVisitTree1.append(node1.right)
+        if node1.left is not None:
+            toVisitTree1.append(node1.left)
+        if node2.right is not None:
+            toVisitTree2.append(node2.right)
+        if node2.left is not None:
+            toVisitTree2.append(node2.left)
+
+        #Check that each tree contains the same null nodes.
+        if (node1.right is None and node2.right is not None) or (node1.right is not None and node2.right is None):
+            return False
+        if (node1.left is None and node2.left is not None) or (node1.left is not None and node2.left is None):
+            return False
+
+    if len(toVisitTree1) > 0 or len(toVisitTree2) > 0:
+        return False
+    return True
+
+#572: Subtree of another tree.
+#Idea: for each node of the main tree, run isSameTree on the node and the subtree.
+def isSubtree(root, subRoot):
+    if root is None:
+        if subRoot is None:
+            return True
+        else:
+            return False
+    toVisit = []
+    toVisit.append(root)
+    while len(toVisit) > 0:
+        currentNode = toVisit.pop()
+        if isSameTree(currentNode, subRoot):
+            return True
+        else:
+            if currentNode.right is not None:
+                toVisit.append(currentNode.right)
+            if currentNode.left is not None:
+                toVisit.append(currentNode.left)
+    return False
