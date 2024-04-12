@@ -179,3 +179,52 @@ def isSubtree(root, subRoot):
             if currentNode.left is not None:
                 toVisit.append(currentNode.left)
     return False
+
+#235: Lowest common ancestor of a binary search tree.
+
+#the lowest common ancestor of p and q is the node t that has both p and q as decendents.
+#Idea: Traverse to p and q. Maintain a list of nodes that were traversed to find p and q.
+#Return the last value from the smaller list which is also present in the larger list.
+
+#returns the route followed in a BST to find a given target node.
+#Assumes the target exists in the tree.
+#Also assumes that all values in the tree are unique.
+def findNode(root, target):
+    route=[]
+    if target.val==root.val:
+        return [target.val]
+    currentNode = root
+    while currentNode.val != target.val:
+        route.append(currentNode.val)
+        if target.val < currentNode.val:
+            currentNode = currentNode.left
+        else:
+            currentNode = currentNode.right
+    route.append(target.val)
+    return route
+
+def lowestCommonAncestor(root, p, q):
+    pRoute = findNode(root, p)
+    qRoute = findNode(root,q)
+
+    counter = (min(len(pRoute), len(qRoute))) - 1
+    found = False
+    while not found:
+        if len(pRoute) < len(qRoute):
+            value = pRoute[counter]
+            if value in qRoute:
+                found=True
+        else:
+            value = qRoute[counter]
+            if value in pRoute:
+                found=True
+        counter-=1
+    #Find and return the node coorosponding to the target value.
+    currentNode = root
+    while True:
+        if currentNode.val == value:
+            return currentNode
+        if value < currentNode.val:
+            currentNode = currentNode.left
+        else:
+            currentNode = currentNode.right
