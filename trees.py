@@ -10,10 +10,10 @@ def print_all(root):
         print_all(root.right)
         print_all(root.left)
 
-#Add a leaf to a tree. Not rebalancing for now.
+#Add a leaf to a tree. Not re-balancing for now.
 #I thought that traversing to the none leaf and updating that into a real leaf
 #would work since the real leaf would still be connected to the tree with the .right
-#or .left, but that isen't the case. Must add values to the tree by updating .right and .left
+#or .left, but that isn't the case. Must add values to the tree by updating .right and .left
 #themselves.
 def add_tree_node(root, val):
     if root is None:
@@ -39,7 +39,6 @@ def add_tree_node(root, val):
 
 #226: Invert Binary tree.
 #Each node is flipped from being a left child to a right, and vice versa.
-
 def invertTree(root):
     if (root is not None and ((root.right is not None) or (root.left is not None))):
         tmp=root.right
@@ -52,14 +51,13 @@ def invertTree(root):
             invertTree(root.left)
     return root
 
-bot_left = TreeNode(1)
-bot_mid_left = TreeNode(3)
-bot_mid_right = TreeNode(6)
-bot_right= TreeNode(9)
-
-left = TreeNode(2,bot_left,bot_mid_left)
-right= TreeNode(7,bot_mid_right,bot_right)
-root = TreeNode(4,left,right)
+# bot_left = TreeNode(1)
+# bot_mid_left = TreeNode(3)
+# bot_mid_right = TreeNode(6)
+# bot_right= TreeNode(9)
+# left = TreeNode(2,bot_left,bot_mid_left)
+# right= TreeNode(7,bot_mid_right,bot_right)
+# root = TreeNode(4,left,right)
 
 # print_all(root)
 # invertTree(root)
@@ -76,7 +74,7 @@ def maxDepth(root, depth=0):
     return max(right_depth, left_depth)
 
 #543: Diameter of binary tree.
-#Diamter is the largest distance between two nodes in the tree.
+#Diameter is the largest distance between two nodes in the tree.
 def diameterOfBinaryTree(root, diameter=0):
     if root is None:
         return 0
@@ -95,7 +93,7 @@ def diameterOfBinaryTree(root, diameter=0):
 # print(diameterOfBinaryTree(new_root))
 
 #110: Balanced Binary tree.
-#Idea: For each node, compute the depth of the node's right and left nodes. If they are not within one of eachother,
+#Idea: For each node, compute the depth of the node's right and left nodes. If they are not within one of each other,
 # return False. This is an O(n^2) implementation since computing the depth of a node is O(n) and we need to do that n times.
 def isBalanced(root):
     if root is None:
@@ -182,7 +180,7 @@ def isSubtree(root, subRoot):
 
 #235: Lowest common ancestor of a binary search tree.
 
-#the lowest common ancestor of p and q is the node t that has both p and q as decendents.
+#the lowest common ancestor of p and q is the node t that has both p and q as descendants.
 #Idea: Traverse to p and q. Maintain a list of nodes that were traversed to find p and q.
 #Return the last value from the smaller list which is also present in the larger list.
 
@@ -219,7 +217,7 @@ def lowestCommonAncestor(root, p, q):
             if value in pRoute:
                 found=True
         counter-=1
-    #Find and return the node coorosponding to the target value.
+    #Find and return the node corresponding to the target value.
     currentNode = root
     while True:
         if currentNode.val == value:
@@ -228,3 +226,38 @@ def lowestCommonAncestor(root, p, q):
             currentNode = currentNode.left
         else:
             currentNode = currentNode.right
+
+#102: Binary Tree Level Order Traversal.
+#idea: Perform a breadth first traversal of the tree. Instead of using a single
+#queue where we pop an element, and add it's children to the end of the queue,
+#we use a 2d array, adding all of the children from each previous array to the next
+#element of the array.
+def levelOrder(root):
+    toVisit=[[]]
+    if root is not None:
+        toVisit=[[root]]
+    else:
+        return []
+
+    counter = 0
+    while len(toVisit[counter]) != 0:
+        nextLevel = []
+        for node in toVisit[counter]:
+            if node.left is not None:
+                nextLevel.append(node.left)
+            if node.right is not None:
+                nextLevel.append(node.right)
+        toVisit.append(nextLevel)
+        counter+=1
+    #Now we have the nodes in order in toVisit. Convert them to their values.
+    nodeValues=[[]]
+    for i in toVisit:
+        add=[]
+        for j in i:
+            add.append(j.val)
+        if len(nodeValues[0]) == 0:
+            nodeValues[0] = add
+        else:
+            if len(add) != 0:
+                nodeValues.append(add)
+    return nodeValues
