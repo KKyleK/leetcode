@@ -261,3 +261,15 @@ def levelOrder(root):
             if len(add) != 0:
                 nodeValues.append(add)
     return nodeValues
+
+#199: Binary Tree Right Side View.
+#Idea: Use the levelOrder function to return an array of the values at each level of the tree.
+#Then take the right most element from each level of the tree.
+def rightSideView(root):
+    levelOrderValues = levelOrder(root)
+    if len(levelOrderValues) == 0:
+        return []
+    rightSideView = []
+    for treeRow in levelOrderValues:
+        rightSideView.append(treeRow[-1])
+    return rightSideView
