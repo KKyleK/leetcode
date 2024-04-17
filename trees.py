@@ -273,3 +273,30 @@ def rightSideView(root):
     for treeRow in levelOrderValues:
         rightSideView.append(treeRow[-1])
     return rightSideView
+
+#1448: Count Good Nodes in Binary Tree.
+#Idea: Perform a search on the tree. If the child of nodes is greater, increment the count,
+#and add that node to the list of nodes that need to be visited. If the node is smaller,
+#don't increment the count. Change the value of the node to be it's parent, then add it.
+def goodNodes(root):
+    toVisit=[]
+    goodNodes = 0
+    if root is None:
+        return 0
+    toVisit.append(root)
+    goodNodes+=1
+    while len(toVisit) > 0:
+        currentNode = toVisit.pop()
+        if currentNode.left is not None:
+            if currentNode.left.val >= currentNode.val:
+                goodNodes+=1
+            else:
+                currentNode.left.val = currentNode.val
+            toVisit.append(currentNode.left)
+        if currentNode.right is not None:
+            if currentNode.right.val >= currentNode.val:
+                goodNodes+=1
+            else:
+                currentNode.right.val = currentNode.val
+            toVisit.append(currentNode.right)
+    return goodNodes
