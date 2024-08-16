@@ -300,3 +300,40 @@ def goodNodes(root):
                 currentNode.right.val = currentNode.val
             toVisit.append(currentNode.right)
     return goodNodes
+
+#98: Validate Binary search tree.
+#Idea: Perform an in order traversal of the tree. Check that the values are in ascending order.
+#O(n) since we are visiting each node once, and then traversing an array of n elements, so that's 2n operations or O(n)
+def isValidBST(root):
+    #Generate a list of the nodes resulting from an in order traversal.
+    inOrderTraversal=[]
+    backTrack=[] #Stack
+    currentNode=root
+
+    while len(backTrack) > 0 or currentNode is not None:
+        while currentNode is not None:
+            backTrack.append(currentNode)
+            currentNode = currentNode.left
+
+        currentNode = backTrack.pop()
+        inOrderTraversal.append(currentNode.val)
+        currentNode = currentNode.right
+
+    #Check that the in order traversal is in ascending order.
+    if len(inOrderTraversal) == 1:
+        return True
+    previous = inOrderTraversal[0]
+    counter=1
+    while counter < len(inOrderTraversal):
+        if inOrderTraversal[counter] <= previous:
+            return False
+        previous = inOrderTraversal[counter]
+        counter = counter+1
+    return True
+
+
+# In order traversal:
+#    3
+#   / \
+#  1   2
+# returns: 1, 3, 2.
