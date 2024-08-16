@@ -337,3 +337,23 @@ def isValidBST(root):
 #   / \
 #  1   2
 # returns: 1, 3, 2.
+
+#230: Kth smallest element in a BST
+#Idea: Use the same in order traversal we have to return the kth smallest element.
+def kthSmallest(root, k):
+    #Generate a list of the nodes resulting from an in order traversal.
+    inOrderTraversal=[]
+    backTrack=[] #Stack
+    currentNode=root
+
+    while len(backTrack) > 0 or currentNode is not None:
+        while currentNode is not None:
+            backTrack.append(currentNode)
+            currentNode = currentNode.left
+
+        currentNode = backTrack.pop()
+        inOrderTraversal.append(currentNode.val)
+        currentNode = currentNode.right
+
+    #Return the kth element.
+    return inOrderTraversal[k-1]
