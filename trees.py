@@ -357,3 +357,40 @@ def kthSmallest(root, k):
 
     #Return the kth element.
     return inOrderTraversal[k-1]
+
+#105: Construct Binary tree from preorder and in order traversal
+#In order traversal: Gives us left subtree, root, right subtree.
+#Pre order traversal: Gives us root, left subtree, right subtree.
+def buildTree(preorder, inorder):
+    #Base case: empty tree.
+    if preorder is None or len(preorder) == 0:
+        return None
+    root = TreeNode(val=preorder[0])
+    print(root.val)
+    #Get the index of the root in the inorder array.
+    findRoot = 0
+    while findRoot < len(preorder):
+        if inorder[findRoot] == root.val:
+            break
+        findRoot+=1
+    if findRoot==0:
+        root.left = None
+    else:
+        leftSubtreePreorder = preorder[1:findRoot+1] #skip root.
+        leftSubtreeInorder = inorder[:findRoot]
+        root.left=(buildTree(leftSubtreePreorder, leftSubtreeInorder))
+    #No right subtree.
+    if findRoot==(len(inorder)-1):
+        root.right = None
+    else:
+        rightSubtreePreorder = preorder[findRoot+1:]
+        rightSubtreeInorder = inorder[findRoot+1:]
+        root.right=(buildTree(rightSubtreePreorder,rightSubtreeInorder))
+    return root
+
+preorder=[3,9,20,15,7]
+inorder= [9,3,15,20,7]
+
+root = buildTree(preorder,inorder)
+print("Printing tree, depth first")
+print_all(root)
