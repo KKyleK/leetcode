@@ -4,11 +4,17 @@ class TreeNode:
         self.left = left
         self.right = right
 
-def print_all(root):
+def print_all(root, vals=[]):
     if root is not None:
-        print (root.val)
-        print_all(root.right)
-        print_all(root.left)
+        print(root.val)
+        vals.append(root.val)
+        print_all(root.right, vals)
+        print_all(root.left, vals)
+    return vals
+
+def printt(root):
+    arr = print_all(root)
+    return arr
 
 #Add a leaf to a tree. Not re-balancing for now.
 #I thought that traversing to the none leaf and updating that into a real leaf
@@ -366,7 +372,6 @@ def buildTree(preorder, inorder):
     if preorder is None or len(preorder) == 0:
         return None
     root = TreeNode(val=preorder[0])
-    print(root.val)
     #Get the index of the root in the inorder array.
     findRoot = 0
     while findRoot < len(preorder):
@@ -392,5 +397,6 @@ preorder=[3,9,20,15,7]
 inorder= [9,3,15,20,7]
 
 root = buildTree(preorder,inorder)
-print("Printing tree, depth first")
-print_all(root)
+arr = print_all(root)
+print("HERE")
+print(arr)
