@@ -117,10 +117,40 @@ def combinationSumHelper(candidates, target, output=[], current=[], currentSum=0
     return output
 
 
-#print(combinationSum([2,3,6,7], 7))
-print(combinationSum([2,3,5], 8))
+# #print(combinationSum([2,3,6,7], 7))
+# print(combinationSum([2,3,5], 8))
 
-#Too slow! How do I make this more efficient? Remove sums above the result for one!
-#Still too slow...
-#Another optimization: store frequencies in a hashtable.
-print(combinationSum([2,22,4,17,28,13,39,27,24,37,12,30,5,23,29,8,16,34,15,36,14,10,31], 30))
+# #Too slow! How do I make this more efficient? Remove sums above the result for one!
+# #Still too slow...
+# #Another optimization: store frequencies in a hashtable.
+# print(combinationSum([2,22,4,17,28,13,39,27,24,37,12,30,5,23,29,8,16,34,15,36,14,10,31], 30))
+
+
+#46: Permutations:
+# Return all possible permutations of an array. (Different ways of organizing the numbers)
+# So [0,1] can be organized as: [0,1] or [1,0]
+#
+#Idea:
+def permute(nums):
+    output = permuteHelper(nums, permutation=[], output=[])
+    return output
+
+#Use a helper to get over python's default value reuse.
+def permuteHelper(nums, permutation=[], output=[]):
+    #Base case: permutation is the same length as
+    if (len(permutation)) == (len(nums)):
+        toAdd=[]
+        for i in permutation:
+            toAdd.append(i)
+        output.append(toAdd)
+        permutation.pop()
+        return
+    for n in nums:
+        if n not in permutation:
+            permutation.append(n)
+            permuteHelper(nums, permutation, output)
+    if len(permutation) != 0:
+        permutation.pop() #Pop up the execution stack.
+    return output
+
+print(permute([1,2,3]))
