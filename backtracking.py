@@ -153,4 +153,23 @@ def permuteHelper(nums, permutation=[], output=[]):
         permutation.pop() #Pop up the execution stack.
     return output
 
-print(permute([1,2,3]))
+# print(permute([1,2,3]))
+
+#90: Subsets II
+# Here our input has duplicates, which results in duplicate sets returned in the powerset.
+# Let's just remove them, then find the powerset.
+def subsetsWithDup(nums):
+    powerSet = subsets(nums)
+    seen={}
+    #Remove duplicates by storing all values in a dictionary.
+    #Python allows tuples as the key type. Let's use those!
+    for s in powerSet:
+        key = tuple(s)
+        seen.update({key:key})
+    print(seen)
+    keys = seen.keys()
+    output=[]
+    for k in keys:
+        output.append(list(k))
+    return output
+print(subsetsWithDup([1,2,2]))
