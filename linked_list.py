@@ -28,3 +28,40 @@ def reverseListHelper(self, current, output=[]):
         reverseListHelper(current.next, output)
     output.append(current.val)
     return output
+
+#21: Merge two sorted lists
+#Idea: Start from the left of both linked lists. Add the smaller node, traverse on that list.
+def mergeTwoLists(list1, list2):
+    if (list1 is None) and (list2 is None):
+        return None
+    newHead = None
+    newListCurrent = newHead
+    newListPrevious = None
+    list1Current = list1
+    list2Current= list2
+
+    while (list1Current is not None) or (list2Current is not None):
+        #Both lists have elements to traverse.
+        if (list1Current is not None) and (list2Current is not None):
+            if list1Current.val <= list2Current.val:
+                toInsert = list1Current.val
+                list1Current = list1Current.next
+            else:
+                toInsert = list2Current.val
+                list2Current = list2Current.next
+        elif (list1Current is not None) and (list2Current is None):
+            toInsert = list1Current.val
+            list1Current = list1Current.next
+        else:
+            toInsert = list2Current.val
+            list2Current = list2Current.next
+
+        #Insert the value into the new list
+        if(newHead is None):
+            newHead = ListNode(toInsert)
+            newListPrevious = newHead
+        else:
+            newListCurrent = ListNode(toInsert)
+            newListPrevious.next = newListCurrent
+            newListPrevious = newListCurrent
+    return newHead
