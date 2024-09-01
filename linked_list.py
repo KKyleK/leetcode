@@ -1,7 +1,7 @@
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
 
 #206: Reverse linked list
@@ -65,3 +65,62 @@ def mergeTwoLists(list1, list2):
             newListPrevious.next = newListCurrent
             newListPrevious = newListCurrent
     return newHead
+
+#143: Reorder list
+# Reorder the list: L0 → L1 → … → Ln - 1 → Ln     To     L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2
+# Without making a new list (Modify the reference)
+#
+# Idea: Start with the first node, make it point to the last node in the list.
+# Repeat until the node doesn't have a next.
+def reorderList(head):
+    if head.next == None:
+        return head
+
+    #Store nodes in order to easily have access to the last and second last nodes.
+    last=[]
+    fullTraverse=head
+    lastNode =None
+    while fullTraverse != None:
+        last.append(fullTraverse)
+        fullTraverse=fullTraverse.next
+
+    currentNode = head
+    while currentNode.next is not None:
+
+        if lastNode is None:
+            lastNode = last.pop()
+            secondLast = last.pop()
+        else:
+            lastNode = secondLast
+            secondLast = last.pop()
+
+        oldNext = currentNode.next
+        currentNode.next = lastNode
+        if (lastNode != oldNext):
+            lastNode.next = oldNext
+            secondLast.next = None
+
+        currentNode = oldNext
+
+    return head
+
+def printLinkedList(head):
+    currNode = head
+    while currNode is not None:
+        print(currNode.val)
+        currNode=currNode.next
+    return
+
+
+
+one = ListNode(1)
+two = ListNode(2)
+three = ListNode(3)
+four = ListNode(4)
+one.next = two
+two.next = three
+three.next = four
+# printLinkedList(one)
+
+reorderList(one)
+printLinkedList(one)
