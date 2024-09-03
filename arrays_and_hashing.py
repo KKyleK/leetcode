@@ -1,8 +1,5 @@
+#217: Contains Duplicate
 def containsDuplicate(nums):
-    """
-    :type nums: List[int]
-    :rtype: bool
-    """
     hash = {}
     for num in nums:
         if hash.get(num) != None:
@@ -12,6 +9,7 @@ def containsDuplicate(nums):
 
 #print(containsDuplicate([0,4,5,0,3,6]))
 
+#242: Valid Anagram
 def isAnagram(s, t):
     string_1 = list(s)
     string_2 = list(t)
@@ -27,13 +25,25 @@ def isAnagram(s, t):
             counter = counter+1
         if not found:
             return False
-    
+
     if len(string_2) == 0:
         return True
     else:
         return False
 
+#1: Two Sum
+def twoSum(self, nums: List[int], target: int) -> List[int]:
+        counter = 0
+        while counter < len(nums):
+            current=counter+1
+            while current < len(nums):
+                if((nums[counter] + nums[current]) == target):
+                    return [counter, current]
+                current+=1
+            counter+=1
 
+
+#49: Group Anagrams
 #1. Pick the first string, add it to an array.
 #2. Search through the array of strings, add it to the array.
 #3. Repeat.
@@ -44,7 +54,7 @@ def groupAnagram(strs):
         addition = []
         addition.append(strs[counter])
         strs.pop(counter)
-    
+
         inner_counter = 0
         while inner_counter < len(strs):
             if isAnagram(addition[0],  strs[inner_counter]):
@@ -61,6 +71,7 @@ strs = [""]
 # print(groupAnagram(strs))
 #print(isAnagram("", ""))
 
+#347: Top K Frequent Elements
 def topKFrequent(nums, k):
     #Construct dictionary that has key:frequency.
     store = {}
@@ -80,20 +91,13 @@ def topKFrequent(nums, k):
         output.remove(smallest)
     return output
 
-
-
 # print(topKFrequent([1,2,3,4,5,6,6],2))
 
-
-
-
-
-
-#238
-#I have to do this in O(n) time...
-#The simplist way to do this would be with a double while loop.
-#For each element, go through the list and copy everything but itself.
-#But that would be O(n^2).
+#238: Product of Array Except Self.
+#Idea: Find the prefix product of each number in the array nums, which is the product of all elements previous.
+# So the prefix for [1,2,3,4] would look like: [1,1,2,6]. Then do the same to find the suffix product of all elements.
+# The suffix for [1,2,3,4] would look like: [24,12,4,1]. Multiply the arrays together to get: [24,12,8,6]
+# Multiply the prefix and suffix values together.
 def productExceptSelf(nums):
 
     result = [1]*(len(nums))
@@ -108,12 +112,12 @@ def productExceptSelf(nums):
         result[(-1+(i*-1))] *= suffixProduct
         suffixProduct = suffixProduct * nums[(-1+(i*-1))]
     return result
-    
+
 #print(productExceptSelf([1,2,3,4]))
 #Lessons: 1: O(n) can mean 2 loops over the data (or any number of loops really)
 #Prefix and suffix are a common topic - Just everything before or everything after.
 
-# 36
+#36: Valid Sudoko
 #Checks: Each row has no duplicates.
 #        Each column has no duplicates.
 #        Each 3x3 has no duplicates.
@@ -134,7 +138,6 @@ def valid_sudoku(board):
                     j+=1
                 i+=1
             column_offset+=3
-            #print (items.keys()) #By here I have a full 3x3 done.
         row_offset+=3
 
     #Check that each row is unique:
@@ -185,13 +188,9 @@ board2 = [["8","1","3",".","7",".",".",".","."]
 ,[".","6",".",".",".",".","2","8","."]
 ,[".",".",".","4","1","9",".",".","5"]
 ,[".",".",".",".","8",".",".","7","9"]]
-# if(valid_sudoku(board2)):
-#     print("TRUE")
-# else:
-#     print("FALSE")
 
 
-#128
+#128: Longest consecutive sequence.
 #Find the length of the longest consecutive element sequence in O(n) time.
 #Obvious solution: Iterate over the array, and find the smallest element.
 #Then do that again and see if the next smallest elements form a sequence or not.
@@ -204,7 +203,7 @@ def longestConsecutive(nums):
     actual_longest=0
     nums_dict = dict.fromkeys(nums, 0)
     #By iterating over the array instead of the dictionary, we can pop from the dictionary which will eliminate duplicate lookups.
-    for num in nums: 
+    for num in nums:
         longest = 1
         num_up = num+1
         num_down = num-1
@@ -220,7 +219,3 @@ def longestConsecutive(nums):
     return actual_longest
 
 print(longestConsecutive([100,4,200,1,3,2]))
-
-#It's too slow! Ok... Let's remove the dict item once it's counted.
-
-
