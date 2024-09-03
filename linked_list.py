@@ -124,3 +124,34 @@ three.next = four
 
 reorderList(one)
 printLinkedList(one)
+
+#19: Remove Nth Node From End of List:
+# Idea: Perform one traversal to get the length of the linked list.
+# Perform a second traversal to the node to be eliminated.
+def removeNthFromEnd(head, n):
+        current=head
+        distance=0
+        while current!=None:
+            distance+=1
+            current = current.next
+        #List is one node long, remove it.
+        if distance == 1:
+            return None
+
+        #n starts at 1.
+        distanceToRemove = distance-n
+
+        counter = 0
+        current = head
+        prev=current
+        while counter < distanceToRemove:
+            prev=current
+            current = current.next
+            counter+=1
+
+        #Removing from head.
+        if (current == prev):
+            head = head.next
+        prev.next = current.next
+        current.next = None
+        return head
