@@ -155,3 +155,40 @@ def removeNthFromEnd(head, n):
         prev.next = current.next
         current.next = None
         return head
+
+#138: Copy List with Random Pointer
+#Idea: Without the random pointer, I would use a current and previous pointer to traverse the list,
+#Creating new nodes as needed.
+#
+#If I store all of the elements in an array, I can use indicies to create the random pointers.
+def copyRandomList(head):
+    if head is None:
+        return None
+
+    #Create the new list while storing the old one in an array.
+    #Usually we need a prev pointer to get the .next connection right, but we don't this time since we are storing them in an array.
+    oldList=[]
+    newList=[]
+    current = head
+    while current is not None:
+        oldList.append(current)
+        newList.append(ListNode(current.val))
+        current = current.next
+
+    #Add next pointers
+    for i in range(len(newList)-1):
+        newList[i].next = newList[i+1]
+
+    for i in range(len(newList)):
+        randomNode = oldList[i].random
+        if randomNode is None:
+            newList[i].random = None
+        else:
+            #Find the random node's indicie.
+            index=0
+            for k in range(len(oldList)):
+                if oldList[k] == randomNode:
+                    index=k
+            newList[i].random = newList[index]
+
+    return newList[0]
