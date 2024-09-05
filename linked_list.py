@@ -192,3 +192,41 @@ def copyRandomList(head):
             newList[i].random = newList[index]
 
     return newList[0]
+
+#138: Add two numbers:
+def addTwoNumbers(l1, l2):
+    newList = None
+    newListCurrent = newList
+    l1Current = l1
+    l2Current = l2
+    carry=0
+
+    while l1Current or l2Current:
+        if l1Current and l2Current:
+            sum = l1Current.val+l2Current.val
+        elif l1Current and not l2Current:
+            sum = l1Current.val
+        else:
+            sum = l2Current.val
+        sum+=carry
+        carry=0
+
+        if (sum >= 10):
+            #Can just subtract here, can never get a sum of 20.
+            sum = sum-10
+            carry=1
+        #insert at head
+        if newList == None:
+            newList = ListNode(sum)
+            newListCurrent = newList
+        else:
+            newListCurrent.next = ListNode(sum)
+            newListCurrent = newListCurrent.next
+        if l1Current:
+            l1Current = l1Current.next
+        if l2Current:
+            l2Current = l2Current.next
+    #There could be a remaining carry to consider.
+    if carry == 1:
+        newListCurrent.next = ListNode(carry)
+    return newList
