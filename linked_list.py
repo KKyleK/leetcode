@@ -113,17 +113,17 @@ def printLinkedList(head):
 
 
 
-one = ListNode(1)
-two = ListNode(2)
-three = ListNode(3)
-four = ListNode(4)
-one.next = two
-two.next = three
-three.next = four
-# printLinkedList(one)
+# one = ListNode(1)
+# two = ListNode(2)
+# three = ListNode(3)
+# four = ListNode(4)
+# one.next = two
+# two.next = three
+# three.next = four
+# # printLinkedList(one)
 
-reorderList(one)
-printLinkedList(one)
+# reorderList(one)
+# printLinkedList(one)
 
 #19: Remove Nth Node From End of List:
 # Idea: Perform one traversal to get the length of the linked list.
@@ -230,3 +230,41 @@ def addTwoNumbers(l1, l2):
     if carry == 1:
         newListCurrent.next = ListNode(carry)
     return newList
+
+#141: Linked List cycle
+#Find if there is a cycle in a linked list.
+#Simple idea: Use an array, store the nodes, check if a duplicate is added.
+#More optimized: Use a hashmap that looks like: {nodeVal: [nodes]} and perform
+#Lookup on that. Still O(n^2) in the absolute worse case where all nodes are the
+#same.
+#
+# Hashmap version: 59ms and 19.3 MB
+# Array version: 612ms and 19.1 MB.
+#
+# So the hashmap solution was MUCH faster and actually used almost the same memory.
+def hasCycle(head):
+    visited={}
+    if head is None:
+        return False
+    current = head
+    while current is not None:
+        seen = visited.get(current.val)
+        if seen:
+            if current in seen:
+                return True
+            else:
+                seen.append(current)
+        #visited did not have any nodes
+        else:
+            visited.update({current.val:[current]})
+
+        current = current.next
+    return False
+
+one = ListNode(1)
+two = ListNode(2)
+print(hasCycle(one))
+one.next = two
+print(hasCycle(two))
+two.next = one
+print(hasCycle(one))
