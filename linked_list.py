@@ -261,10 +261,136 @@ def hasCycle(head):
         current = current.next
     return False
 
-one = ListNode(1)
-two = ListNode(2)
-print(hasCycle(one))
-one.next = two
-print(hasCycle(two))
-two.next = one
-print(hasCycle(one))
+# one = ListNode(1)
+# two = ListNode(2)
+# print(hasCycle(one))
+# one.next = two
+# print(hasCycle(two))
+# two.next = one
+# print(hasCycle(one))
+
+#146: LRU Cache
+# An LRU Cache (Least recently used cache) is a fixed size cache where
+# The least recently used item is removed when the cache is full and more needs to be added.
+#
+# Idea: Store keys and values in two data structures: a linked list, and a hashmap.
+# The hashmap will cover the additions and lookups in O(1) time.
+# To keep track of the least recently used node, the linked list head will represent it.
+# When a value is used, that node needs to be put to the tail of the linked list in O(1) time,
+# So we need a double linked list so that we can take a node out of the list from any position.
+
+# We want to keep track of the key and value, so that the hashtable can be updated when a node needs to be
+# deleted
+class hashNode:
+    def __init__(self, val=0, key=0, next=None, prev=None):
+        self.val = val
+        self.key = key
+        self.next = next
+        self.prev = prev
+        return
+
+class LRUCache:
+    def __init__(self, capacity):
+        self.cache={} #This will be: key:hashNode (where hashNode.val contains the value.)
+        self.head = hashNode()
+        self.tail = self.head
+        self.currentCapacity=0
+        self.capacity = capacity
+        return
+
+    #Every time we do a get, remove the node and add it again.
+    #When we do a put on full, remove the head and add the new node.
+    #Remove a node from the list.
+    def removeNode(self, node):
+        #Remove from the head
+        if node == self.head:
+            if self.head == self.tail:
+                self.head = None
+                self.tail = self.head
+            else:
+                self.head = self.head.next
+                self.head.prev = None
+
+        elif node == self.tail:
+            self.tail = self.tail.prev
+            self.tail.next = None
+
+        else:
+            prev = node.prev
+            next = node.next
+            prev.next = next
+            next.prev = prev
+        return
+
+    #Add a node to the end of the list.
+    def addNodeToTail(self, node):
+        if self.currentCapacity == 0:
+            self.head = node
+            self.tail = self.head
+        else:
+            node.prev = self.tail
+            self.tail.next = node
+            node.next = None
+            self.tail = node
+        return
+
+    def get(self, key):
+        node = self.cache.get(key)
+        #Remove the node and add it to the end.
+        if node:
+            self.removeNode(node)
+            self.currentCapacity-=1
+            self.addNodeToTail(node)
+            self.currentCapacity+=1
+            return node.val
+        else:
+            return -1
+
+    def put(self, key, value):
+        current = self.cache.get(key)
+        if current:
+            self.removeNode(current)
+            self.currentCapacity-=1
+            newNum = hashNode(value,key)
+            self.cache.update({key:newNum})
+            self.addNodeToTail(newNum)
+            self.currentCapacity+=1
+
+        else:
+            #Check if the oldest element in the cache needs to be deleted.
+            if self.currentCapacity == self.capacity:
+                self.cache.pop(self.head.key)
+                self.removeNode(self.head)
+                self.currentCapacity -=1
+
+            #Add the new element.
+            newNum = hashNode(value, key)
+            self.cache.update({key:newNum})
+            self.addNodeToTail(newNum)
+            self.currentCapacity +=1
+        return
+
+c = LRUCache(1)
+c.put(2,1)
+print(c.get(2))
+
+# c = LRUCache(1)
+# c.put(2,1)
+# print(c.get(2))
+
+# c = LRUCache(3)
+# c.put(1,1)
+# c.put(2,2)
+# c.put(3,3)
+# c.put(4,4) # (2,2) (3,3) (4,4)
+
+# print(c.get(4))
+# print(c.get(3))
+# print(c.get(2)) #(4,4) (3,3) (2,2)
+# print(c.get(1))
+# c.put(5,5) #(3,3) (2,2) (5,5)
+# print(c.get(1))
+# print(c.get(2)) #(3,3) (5,5) (2,2)
+# print(c.get(3))
+# print(c.get(4))
+# print(c.get(5))
