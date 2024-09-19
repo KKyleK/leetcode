@@ -60,5 +60,29 @@ def lastSoneWeight(stones):
     else:
         return stones[0]
 
-stones = [2,2]
-print(lastSoneWeight(stones))
+# stones = [2,2]
+# print(lastSoneWeight(stones))
+
+#973: K Closest points to origin
+#Given an array of points [x,y] return the K closes points to the origin, where distance = sqrt(x^2 + y^2)
+#Idea: calculate the distance of each point. Store in a tuple that looks like: (distance, point) Then pop K elements from the priority queue. (Python's priority queue automatically uses the first element in the tuple for ordering, so distance is the first element in the tuple)
+import math
+#heapq is a module that acts as a priority queue.
+import heapq
+def kClosest(points, k):
+    priorityQueue = []
+    for p in points:
+        distanceSquared = (p[0]**2) + (p[1] **2)
+        point = (math.sqrt((p[0]**2) + (p[1] **2)), p)
+        heapq.heappush(priorityQueue, point)
+
+    toReturn = []
+
+    for p in range(k):
+        (distance, point) = heapq.heappop(priorityQueue)
+        toReturn.append(point)
+    return toReturn
+
+points = [[1,3],[-2,2], [10,10], [1,1], [0,0], [3,1]]
+k = 2
+print(kClosest(points, k))
