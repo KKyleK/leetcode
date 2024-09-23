@@ -83,6 +83,17 @@ def kClosest(points, k):
         toReturn.append(point)
     return toReturn
 
-points = [[1,3],[-2,2], [10,10], [1,1], [0,0], [3,1]]
-k = 2
-print(kClosest(points, k))
+# points = [[1,3],[-2,2], [10,10], [1,1], [0,0], [3,1]]
+# k = 2
+# print(kClosest(points, k))
+
+#215: Kth largest elements in an array.
+#Simplest solution is to sort the array and return the kth largest element.
+#Another solution is to multiply each number by -1 (since heapq gives you the smallest elements), then pop elements k times.
+#Another solution, pop elements from the heapq len(nums) - k times.
+def findKthLargest(nums, k):
+    #Without this, nums is not a heap, and the first call of heappop will return the first element from the array, before converting it to a heap.
+    heapq.heapify(nums)
+    for i in range(len(nums)-k+1):
+        num = heapq.heappop(nums)
+    return num
