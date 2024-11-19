@@ -84,3 +84,20 @@ def intToRoman(num):
             counter+=1
     return roman
 print(intToRoman(1))
+
+#Extra practice
+
+#Idea: Take a string. For each letter, check if it matches all of the other strings.
+#If it doesn't, stop.
+def longestCommonPrefix(strs):
+    commonPrefix=""
+    compareString = strs.pop()
+
+    index = 0
+    while index < len(compareString):
+        for string in strs:
+            if index >= len(string) or string[index] != compareString[index]:
+                return commonPrefix
+        commonPrefix+=compareString[index]
+        index+=1
+    return commonPrefix
